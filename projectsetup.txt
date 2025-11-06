@@ -1,0 +1,26 @@
+Sprint 1
+Task,Detail
+1.1 Code Repository,Create a main project repository on GitHub/GitLab.
+1.2 Django Project Init,Use the django-admin startproject job_agent command.
+1.3 React Project Init,Use npx create-react-app frontend --template typescript to create the React app with TypeScript support.
+1.4 Project Structure,"Organize the repository root: docker-compose.yml, backend/, frontend/."
+
+Task,Detail
+2.1 Django Dockerfile,"Create a backend/Dockerfile using a Python image (e.g., python:3.11-slim). Add commands to install dependencies (pip install -r requirements.txt) and copy project files."
+2.2 Frontend Dockerfile,"Create a frontend/Dockerfile using a Node image (e.g., node:20). Add commands to install dependencies (npm install) and start the React dev server."
+2.3 requirements.txt,"In backend/, add basic dependencies: Django, djangorestframework, psycopg2-binary."
+
+Task,Detail
+3.1 Database Service,"Define a PostgreSQL service in docker-compose.yml (e.g., using image: postgres:15-alpine). Define environment variables for the database name, user, and password."
+3.2 Backend Service,"Define the Django service using the backend/Dockerfile. Map local code to the container, and ensure it depends on the db service."
+3.3 Frontend Service,"Define the React service using the frontend/Dockerfile. Map ports (e.g., 3000:3000)."
+
+Task,Detail
+4.1 Database Settings,"In Django's settings.py, configure the DATABASES setting to use the PostgreSQL service name (e.g., db) and the credentials defined in docker-compose.yml."
+4.2 Docker Compose Up,Run docker-compose up --build and troubleshoot any connectivity errors (this is where most of your time will go).
+4.3 Django Migrations,"Once services are running, execute docker-compose exec backend python manage.py migrate to create the initial database tables."
+
+Task,Detail
+5.1 Test App Creation,"Inside the Django project, create a simple app: python manage.py startapp core."
+5.2 Simple DRF Endpoint,"Create a basic view (core/views.py) that returns a simple JSON message (e.g., {""message"": ""API is online""}) and register it in urls.py."
+5.3 React Fetch,"In the React frontend, use fetch or axios to call the new Django endpoint and display the response text on the home page. This confirms the cross-container communication is working."

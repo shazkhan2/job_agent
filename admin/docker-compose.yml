@@ -9,6 +9,28 @@ services:
     - .:/app
   depends_on:
     - db
+    - rabbitmq
+    - redis
+  environment:
+    DJANGO_SETTINGS_MODULE: admin.settings
+    CELERY_BROKER_URL: amqp://user:password@rabbitmq:5672//
+    #OPENAI_API_KEY: ${OPENAI_API_KEY}
+ celery_worker:
+  build:
+    context: .
+    dockerfile: Dockerfile
+  command: celery -A admin worker -l info
+  volumes:
+    - .:/app
+  depends_on:
+    - db
+    - rabbitmq
+    - redis
+  environment:
+    DJANGO_SETTINGS_MODULE: admin.settings
+    CELERY_BROKER_URL: amqp://user:password@rabbitmq:5672//
+    CELERY_RESULT_BACKEND: redis://redis:6379/0
+    #OPENAI_API_KEY: ${OPENAI_API_KEY}
 
  db:
   image: mysql:8.0
@@ -22,5 +44,37 @@ services:
     - db_data:/var/lib/mysql
   ports:
     - "33066:3306"
+
+ rabbitmq:
+  image: rabbitmq:3-management
+  hostname: rabbitmq
+  ports:
+    - "5672:5672"
+    - "15672:15672"
+  environment:
+    RABBITMQ_DEFAULT_USER: user
+    RABBITMQ_DEFAULT_PASS: password
+  volumes:
+    - rabbitmq_data:/var/lib/rabbitmq
+  healthcheck:
+        test: ["CMD", "rabbitmqctl", "status"]
+        interval: 5s
+        timeout: 10s
+        retries: 5
+
+ redis:
+  image: redis:7-alpine
+  ports:
+    - "6379:6379"
+  volumes:
+    - redis_data:/data
+  healthcheck:
+    test: ["CMD", "redis-cli", "ping"]
+    interval: 5s
+    timeout: 10s
+    retries: 5
+
 volumes:
     db_data:
+    rabbitmq_data:
+    redis_data:

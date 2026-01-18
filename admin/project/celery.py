@@ -1,9 +1,9 @@
 import os
-from admin.project.celery import Celery
+from celery import Celery
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'admin.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'project.settings')
 
-app = Celery('admin')
+app = Celery('project')
 
 app.config_from_object('django.conf:settings', namespace='CELERY')
 

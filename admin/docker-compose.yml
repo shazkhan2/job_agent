@@ -12,14 +12,14 @@ services:
     - rabbitmq
     - redis
   environment:
-    DJANGO_SETTINGS_MODULE: admin.settings
+    DJANGO_SETTINGS_MODULE: project.settings
     CELERY_BROKER_URL: amqp://user:password@rabbitmq:5672//
     #OPENAI_API_KEY: ${OPENAI_API_KEY}
  celery_worker:
   build:
     context: .
     dockerfile: Dockerfile
-  command: celery -A admin worker -l info
+  command: celery -A project worker -l info
   volumes:
     - .:/app
   depends_on:
@@ -27,7 +27,7 @@ services:
     - rabbitmq
     - redis
   environment:
-    DJANGO_SETTINGS_MODULE: admin.settings
+    DJANGO_SETTINGS_MODULE: project.settings
     CELERY_BROKER_URL: amqp://user:password@rabbitmq:5672//
     CELERY_RESULT_BACKEND: redis://redis:6379/0
     #OPENAI_API_KEY: ${OPENAI_API_KEY}
@@ -54,6 +54,7 @@ services:
   environment:
     RABBITMQ_DEFAULT_USER: user
     RABBITMQ_DEFAULT_PASS: password
+    RABBITMQ_DEFAULT_VHOST: 
   volumes:
     - rabbitmq_data:/var/lib/rabbitmq
   healthcheck:

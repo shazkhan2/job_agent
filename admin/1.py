@@ -75,21 +75,23 @@ print(counter)"""
 #   return sum(num)
 
 # print(my_function(1,2,3))
-# def countdown(n):
-#   if n <= 0:
-#     print("Done!")
-#   else:
-#     print(n)
-#     countdown(n - 1)
 
-# countdown(5)
 
-def factorial(n):
-  # Base case
-  if n == 0 or n == 1:
-    return 1
-  # Recursive case
-  else:
-    return n * factorial(n - 1)
-
-print(factorial(5))
+def drink_potion(stats):
+    name, power = stats
+    print(f"{name} drank a magic potion!")
+    return [name, power +10]
+def wear_suit(stats):
+    name, power = stats
+    print(f"{name} put on spiderman suit!")
+    return [name, power + 5]
+def make_hero(stats):
+    name, power = stats
+    return f"Final hero: {name} (power level: {power})"
+def adventure_start(hero_name, starting_power):
+    current_hero = [hero_name, starting_power]
+    current_hero = drink_potion(current_hero)
+    current_hero = wear_suit(current_hero)
+    result = make_hero(current_hero)
+    print(result)
+adventure_start("Arnold", 50)
